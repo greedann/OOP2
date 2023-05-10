@@ -9,32 +9,24 @@ public class Roslina extends Organizm{
 
     @Override
     public void akcja(int zasieg,boolean wech) {
+        this.wiek++;
         int dice = (int) (Math.random() * 5);
         if (dice ==0)
         {
             int newX = this.x;
             int newY = this.y;
             int direction = (int) (Math.random() * 4);
-            switch (direction)
-            {
-                case 0:
-                    newX--;
-                    break;
-                case 1:
-                    newX++;
-                    break;
-                case 2:
-                    newY--;
-                    break;
-                case 3:
-                    newY++;
-                    break;
+            switch (direction) {
+                case 0 -> newX--;
+                case 1 -> newX++;
+                case 2 -> newY--;
+                case 3 -> newY++;
             }
-            if (newX < 0 ||  newX >= this.world.getWidth() || newY < 0 || newY >= this.world.getHeight() || this.world.isOccupied(newX, newY))
+            if (newX < 0 ||  newX >= this.world.getBlockWidth() || newY < 0 || newY >= this.world.getBlockHeight() || this.world.isOccupied(newX, newY))
             {
                 return;
             }
-        else
+            else
             {
                 this.world.addOrganizm(this.copy(newX, newY));
             }

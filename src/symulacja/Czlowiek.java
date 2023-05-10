@@ -20,14 +20,19 @@ public class Czlowiek extends Zwierze{
 
     @Override
     public void akcja(int zasieg, boolean wech) {
-
-            Organizm organizm = world.getOrganizm(this.x, this.y);
-            if (organizm != null) {
-                this.world.removeOrganizm(organizm);
-            }
-
+        this.wiek++;
+        Organizm organizm = world.getOrganizm(this.x, this.y);
+        if (organizm != null) {
+            this.world.removeOrganizm(organizm);
+        }
         if (this.umiejetnosc > 0) {
             this.umiejetnosc--;
+            if (this.umiejetnosc == 0) {
+                this.umiejetnosc = -5;
+            }
+        }
+        else if (this.umiejetnosc < 0) {
+            this.umiejetnosc++;
         }
     }
 
@@ -47,6 +52,10 @@ public class Czlowiek extends Zwierze{
             return true;
         }
         return false;
+    }
+
+    public int getUmiejetnosc() {
+        return this.umiejetnosc;
     }
 
 

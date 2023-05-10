@@ -7,6 +7,7 @@ public class Zwierze extends  Organizm{
 
     @Override
     public void akcja(int zasieg,boolean wech) {
+        this.wiek++;
         int nx = this.x;
         int ny = this.y;
         int direction = (int) (Math.random() * 4);
@@ -24,7 +25,7 @@ public class Zwierze extends  Organizm{
                 ny -= zasieg;
                 break;
         }
-        if (nx >= 0 && nx < this.world.getWidth() && ny >= 0 && ny < this.world.getHeight()) {
+        if (nx >= 0 && nx < this.world.getBlockWidth() && ny >= 0 && ny < this.world.getBlockHeight()) {
             if (!this.world.isOccupied(nx, ny)) {
                 this.x = nx;
                 this.y = ny;
