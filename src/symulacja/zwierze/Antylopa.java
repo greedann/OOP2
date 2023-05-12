@@ -27,7 +27,7 @@ public class Antylopa extends Zwierze {
         int dice = (int) (Math.random()*2);
         if (dice == 1) {
             System.out.println(this.to_str() + " uciekla przed " + organizm.to_str());
-            int newpos[] = this.world.getFree(this.x, this.y);
+            int[] newpos = this.world.getFree(this.x, this.y);
             if (newpos[0] != -1) {
                 this.x = newpos[0];
                 this.y = newpos[1];

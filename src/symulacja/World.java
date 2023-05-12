@@ -10,11 +10,11 @@ import symulacja.rosliny.*;
 import symulacja.zwierze.*;
 
 public class World extends JFrame {
-    int width;
-    int height;
-    public int turn;
-    ArrayList<Organizm> organizmy = new ArrayList<Organizm>();
-    Czlowiek czlowiek;
+    private int width;
+    private int height;
+    private int turn;
+    private ArrayList<Organizm> organizmy = new ArrayList<Organizm>();
+    private Czlowiek czlowiek;
 
     public World(int width, int height) {
         super("Pavel Harelik 196766");
@@ -26,7 +26,7 @@ public class World extends JFrame {
             AddRandomOrganizm();
         }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(width * 20, height * 22);
+        setSize(width * 20, height * 22 + 100);
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -35,14 +35,13 @@ public class World extends JFrame {
                     int y = e.getY();
                     x = (int) x / 20;
                     y = (int) (y-40) / 20;
-                    select_and_add(x, y);
+                    if (x >= 0 && x < width && y >= 0 && y < height) {
+                        select_and_add(x, y);
+                    }
                 }
             }
         });
-
-
-
-        addKeyListener(new KeyAdapter() {
+        KeyListener keyListener = new KeyListener() {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 int dx = 0, dy = 0;
@@ -72,9 +71,95 @@ public class World extends JFrame {
                     case KeyEvent.VK_L -> fileWork(false);
                 }
             }
+            public void keyReleased(KeyEvent keyEvent) {
+            }
+            public void keyTyped(KeyEvent keyEvent) {
+            }
+        };
+        JButton button = new JButton("Next Turn");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                nextTurn();
+                System.out.println("Turn: " + turn);
+            }
         });
+        button.addKeyListener(keyListener);
+        button.setBounds(0, height * 20+5, width * 10, 50);
+        add(button);
+
+        addKeyListener(keyListener);
+
+        JButton button2 = new JButton("Save to file");
+        button2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                requestFocusInWindow();
+                fileWork(true);
+            }
+        });
+        button2.addKeyListener(keyListener);
+        button2.setBounds(width * 10, height * 20+55, width * 10, 50);
+        add(button2);
+
+        JButton button3 = new JButton("Load from file");
+        button3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                requestFocusInWindow();
+                fileWork(false);
+            }
+        });
+        button3.addKeyListener(keyListener);
+        button3.setBounds(0, height * 20+55, width * 10, 50);
+        add(button3);
+
+        JButton button4 = new JButton("Show hint");
+        button4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                requestFocusInWindow();
+                show_hint();
+            }
+        });
+        button4.addKeyListener(keyListener);
+        button4.setBounds(width * 10, height * 20+5, width * 10, 50);
+        add(button4);
+
+        setResizable(false);
+        setLayout(null);
         setVisible(true);
+        requestFocusInWindow();
         this.repaint();
+    }
+
+    private void show_hint() {
+        JFrame frame = new JFrame("Hint Window");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(300, 350);
+        frame.setLocationRelativeTo(null);
+        String hint = "<html>Controls:<br>SPACE to next turn<br>U to use special ability<br>Arrows to move<br>" +
+                "S to save to file<br>L to load from file<br><br>Types of organisms and colors: <br>Antylopa - yellow<br>" +
+                "Barberry - pink<br>Guarana - red<br>Fox - orange<br>Milk - white<br>Sheep - cyan<br>Grass - green<br>" +
+                "Wolf - black<br>Wolfberry - blue<br>Turtle - gray</html>";
+        JLabel label = new JLabel(hint);
+        JButton button = new JButton("OK");
+        button.setBounds(100, 280, 100, 30);
+
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(label);
+        frame.add(button);
+        frame.add(panel);
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+        frame.setVisible(true);
+
+
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+        frame.setVisible(true);
     }
 
     private void fileWork(boolean write) {

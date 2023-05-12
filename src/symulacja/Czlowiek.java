@@ -3,7 +3,7 @@ package symulacja;
 import java.awt.*;
 
 public class Czlowiek extends Zwierze{
-    int umiejetnosc;
+    private int umiejetnosc;
 
     public Czlowiek(World world, int x, int y) {
         super(world, x, y);
@@ -46,12 +46,10 @@ public class Czlowiek extends Zwierze{
         return new Czlowiek(this.world, this.x, this.y);
     }
 
-    public boolean setUmiejetnosc(int umiejetnosc) {
+    public void setUmiejetnosc(int umiejetnosc) {
         if (this.umiejetnosc == 0) {
             this.umiejetnosc = umiejetnosc;
-            return true;
         }
-        return false;
     }
 
     public int getUmiejetnosc() {
