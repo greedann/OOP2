@@ -27,6 +27,21 @@ public class World extends JFrame {
         }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(width * 20, height * 22);
+
+        addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    x = (int) x / 20;
+                    y = (int) (y-40) / 20;
+                    select_and_add(x, y);
+                }
+            }
+        });
+
+
+
         addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
@@ -88,6 +103,67 @@ public class World extends JFrame {
         frame.setVisible(true);
     }
 
+    private void select_and_add(int x, int y) {
+        JFrame frame = new JFrame("Zwierze select Window");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 150);
+        frame.setLocationRelativeTo(null);
+
+        JRadioButton radioButton1 = new JRadioButton("Antylopa");
+        JRadioButton radioButton2 = new JRadioButton("Lis");
+        JRadioButton radioButton3 = new JRadioButton("Owca");
+        JRadioButton radioButton4 = new JRadioButton("Wilk");
+        JRadioButton radioButton5 = new JRadioButton("Zolw");
+        JRadioButton radioButton6 = new JRadioButton("Trawa");
+        JRadioButton radioButton7 = new JRadioButton("Wilcze jagody");
+        JRadioButton radioButton8 = new JRadioButton("Guarana");
+        JRadioButton radioButton9 = new JRadioButton("Mlecz");
+        JRadioButton radioButton10 = new JRadioButton("Barszcz Sosnowskiego");
+        JButton button = new JButton("OK");
+
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(radioButton1);
+        buttonGroup.add(radioButton2);
+        buttonGroup.add(radioButton3);
+        buttonGroup.add(radioButton4);
+        buttonGroup.add(radioButton5);
+        buttonGroup.add(radioButton6);
+        buttonGroup.add(radioButton7);
+        buttonGroup.add(radioButton8);
+        buttonGroup.add(radioButton9);
+        buttonGroup.add(radioButton10);
+
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(radioButton1);
+        panel.add(radioButton2);
+        panel.add(radioButton3);
+        panel.add(radioButton4);
+        panel.add(radioButton5);
+        panel.add(radioButton6);
+        panel.add(radioButton7);
+        panel.add(radioButton8);
+        panel.add(radioButton9);
+        panel.add(radioButton10);
+        panel.add(button);
+        frame.add(panel);
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (radioButton1.isSelected()) addOrganizm(new Antylopa(World.this, x, y));
+                else if (radioButton2.isSelected()) addOrganizm(new Lis(World.this, x, y));
+                else if (radioButton3.isSelected()) addOrganizm(new Owca(World.this, x, y));
+                else if (radioButton4.isSelected()) addOrganizm(new Wilk(World.this, x, y));
+                else if (radioButton5.isSelected()) addOrganizm(new Zolw(World.this, x, y));
+                else if (radioButton6.isSelected()) addOrganizm(new Trawa(World.this, x, y));
+                else if (radioButton7.isSelected()) addOrganizm(new WilczeJagody(World.this, x, y));
+                else if (radioButton8.isSelected()) addOrganizm(new Guarana(World.this, x, y));
+                else if (radioButton9.isSelected()) addOrganizm(new Mlecz(World.this, x, y));
+                else if (radioButton10.isSelected()) addOrganizm(new BarszczSosnowskiego(World.this, x, y));
+                frame.dispose();
+                repaint();
+            }
+        });
+        frame.setVisible(true);
+    }
     private void moveCzlowiek(int dx, int dy) {
         // перемещаем текущий квадрат
         int newX = czlowiek.getX() + dx;
