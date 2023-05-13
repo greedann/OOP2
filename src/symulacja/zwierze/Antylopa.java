@@ -4,12 +4,14 @@ import symulacja.Organizm;
 import symulacja.World;
 import symulacja.Zwierze;
 
+import java.awt.*;
+
 public class Antylopa extends Zwierze {
     public Antylopa(World world, int x, int y) {
         super(world, x, y);
         this.sila = 4;
         this.inicjatywa = 4;
-        this.color = java.awt.Color.YELLOW;
+        this.color = Color.CYAN;
     }
 
     @Override

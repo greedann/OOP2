@@ -10,7 +10,7 @@ public class Zolw extends Zwierze{
         super(world, x, y);
         this.sila = 2;
         this.inicjatywa = 1;
-        this.color = Color.gray;
+        this.color = Color.GRAY;
     }
 
     @Override

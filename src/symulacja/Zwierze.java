@@ -12,18 +12,10 @@ public class Zwierze extends  Organizm{
         int ny = this.y;
         int direction = (int) (Math.random() * 4);
         switch (direction) {
-            case 0:
-                nx += zasieg;
-                break;
-            case 1:
-                nx -= zasieg;
-                break;
-            case 2:
-                ny += zasieg;
-                break;
-            case 3:
-                ny -= zasieg;
-                break;
+            case 0 -> nx += zasieg;
+            case 1 -> nx -= zasieg;
+            case 2 -> ny += zasieg;
+            case 3 -> ny -= zasieg;
         }
         if (nx >= 0 && nx < this.world.getBlockWidth() && ny >= 0 && ny < this.world.getBlockHeight()) {
             if (!this.world.isOccupied(nx, ny)) {

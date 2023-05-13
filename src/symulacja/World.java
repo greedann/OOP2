@@ -1,19 +1,25 @@
 package symulacja;
 
-import java.io.*;
-import java.util.ArrayList;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-
 import symulacja.rosliny.*;
 import symulacja.zwierze.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class World extends JFrame {
     private int width;
     private int height;
     private int turn;
-    private ArrayList<Organizm> organizmy = new ArrayList<Organizm>();
+    private final ArrayList<Organizm> organizmy = new ArrayList<>();
     private Czlowiek czlowiek;
 
     public World(int width, int height) {
@@ -33,8 +39,8 @@ public class World extends JFrame {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     int x = e.getX();
                     int y = e.getY();
-                    x = (int) x / 20;
-                    y = (int) (y-40) / 20;
+                    x = x / 20;
+                    y = (y-40) / 20;
                     if (x >= 0 && x < width && y >= 0 && y < height) {
                         select_and_add(x, y);
                     }
@@ -44,7 +50,6 @@ public class World extends JFrame {
         KeyListener keyListener = new KeyListener() {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
-                int dx = 0, dy = 0;
                 switch (keyCode) {
                     case KeyEvent.VK_UP -> {
                         if (czlowiek.getUmiejetnosc() > 0) moveCzlowiek(0, -2);
@@ -77,11 +82,9 @@ public class World extends JFrame {
             }
         };
         JButton button = new JButton("Next Turn");
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                nextTurn();
-                System.out.println("Turn: " + turn);
-            }
+        button.addActionListener(e -> {
+            nextTurn();
+            System.out.println("Turn: " + turn);
         });
         button.addKeyListener(keyListener);
         button.setBounds(0, height * 20+5, width * 10, 50);
@@ -90,33 +93,27 @@ public class World extends JFrame {
         addKeyListener(keyListener);
 
         JButton button2 = new JButton("Save to file");
-        button2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                requestFocusInWindow();
-                fileWork(true);
-            }
+        button2.addActionListener(e -> {
+            requestFocusInWindow();
+            fileWork(true);
         });
         button2.addKeyListener(keyListener);
         button2.setBounds(width * 10, height * 20+55, width * 10, 50);
         add(button2);
 
         JButton button3 = new JButton("Load from file");
-        button3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                requestFocusInWindow();
-                fileWork(false);
-            }
+        button3.addActionListener(e -> {
+            requestFocusInWindow();
+            fileWork(false);
         });
         button3.addKeyListener(keyListener);
         button3.setBounds(0, height * 20+55, width * 10, 50);
         add(button3);
 
         JButton button4 = new JButton("Show hint");
-        button4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                requestFocusInWindow();
-                show_hint();
-            }
+        button4.addActionListener(e -> {
+            requestFocusInWindow();
+            show_hint();
         });
         button4.addKeyListener(keyListener);
         button4.setBounds(width * 10, height * 20+5, width * 10, 50);
@@ -135,9 +132,9 @@ public class World extends JFrame {
         frame.setSize(300, 350);
         frame.setLocationRelativeTo(null);
         String hint = "<html>Controls:<br>SPACE to next turn<br>U to use special ability<br>Arrows to move<br>" +
-                "S to save to file<br>L to load from file<br><br>Types of organisms and colors: <br>Antylopa - yellow<br>" +
-                "Barberry - pink<br>Guarana - red<br>Fox - orange<br>Milk - white<br>Sheep - cyan<br>Grass - green<br>" +
-                "Wolf - black<br>Wolfberry - blue<br>Turtle - gray</html>";
+                "S to save to file<br>L to load from file<br><br>Types of organisms and colors: <br>" +
+                "Antylopa - cyan<br> Lis - orange<br>Wilk - dark gray<br>Owca - white<br>Zolw - grey<br>" +
+                "Barszcz - magenta<br>Guarana - pink<br>Mlecz - yellow<br>Trawa - green<br>Wilcze jagody - blue<br>";
         JLabel label = new JLabel(hint);
         JButton button = new JButton("OK");
         button.setBounds(100, 280, 100, 30);
@@ -146,25 +143,17 @@ public class World extends JFrame {
         panel.add(label);
         frame.add(button);
         frame.add(panel);
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-            }
-        });
+        button.addActionListener(e -> frame.dispose());
         frame.setVisible(true);
 
 
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-            }
-        });
+        button.addActionListener(e -> frame.dispose());
         frame.setVisible(true);
     }
 
     private void fileWork(boolean write) {
         JFrame frame = new JFrame("File Input Window");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300, 100);
         frame.setLocationRelativeTo(null);
 
@@ -177,13 +166,13 @@ public class World extends JFrame {
         panel.add(textField);
         panel.add(button);
         frame.add(panel);
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String fileName = textField.getText();
+        button.addActionListener(e -> {
+            String fileName = textField.getText();
+            if (!fileName.equals("")) {
                 if (write) saveToFile(fileName);
                 else readFromFile(fileName);
-                frame.dispose();
             }
+            frame.dispose();
         });
         frame.setVisible(true);
     }
@@ -231,21 +220,19 @@ public class World extends JFrame {
         panel.add(radioButton10);
         panel.add(button);
         frame.add(panel);
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (radioButton1.isSelected()) addOrganizm(new Antylopa(World.this, x, y));
-                else if (radioButton2.isSelected()) addOrganizm(new Lis(World.this, x, y));
-                else if (radioButton3.isSelected()) addOrganizm(new Owca(World.this, x, y));
-                else if (radioButton4.isSelected()) addOrganizm(new Wilk(World.this, x, y));
-                else if (radioButton5.isSelected()) addOrganizm(new Zolw(World.this, x, y));
-                else if (radioButton6.isSelected()) addOrganizm(new Trawa(World.this, x, y));
-                else if (radioButton7.isSelected()) addOrganizm(new WilczeJagody(World.this, x, y));
-                else if (radioButton8.isSelected()) addOrganizm(new Guarana(World.this, x, y));
-                else if (radioButton9.isSelected()) addOrganizm(new Mlecz(World.this, x, y));
-                else if (radioButton10.isSelected()) addOrganizm(new BarszczSosnowskiego(World.this, x, y));
-                frame.dispose();
-                repaint();
-            }
+        button.addActionListener(e -> {
+            if (radioButton1.isSelected()) addOrganizm(new Antylopa(World.this, x, y));
+            else if (radioButton2.isSelected()) addOrganizm(new Lis(World.this, x, y));
+            else if (radioButton3.isSelected()) addOrganizm(new Owca(World.this, x, y));
+            else if (radioButton4.isSelected()) addOrganizm(new Wilk(World.this, x, y));
+            else if (radioButton5.isSelected()) addOrganizm(new Zolw(World.this, x, y));
+            else if (radioButton6.isSelected()) addOrganizm(new Trawa(World.this, x, y));
+            else if (radioButton7.isSelected()) addOrganizm(new WilczeJagody(World.this, x, y));
+            else if (radioButton8.isSelected()) addOrganizm(new Guarana(World.this, x, y));
+            else if (radioButton9.isSelected()) addOrganizm(new Mlecz(World.this, x, y));
+            else if (radioButton10.isSelected()) addOrganizm(new BarszczSosnowskiego(World.this, x, y));
+            frame.dispose();
+            repaint();
         });
         frame.setVisible(true);
     }
@@ -282,6 +269,7 @@ public class World extends JFrame {
 
     public void nextTurn() {
         this.turn++;
+        organizmy.sort((o1, o2) -> o2.getInicjatywa() - o1.getInicjatywa());
         for (int i = 0; i < organizmy.size(); i++) {
             organizmy.get(i).akcja(1, false);
         }
@@ -437,6 +425,7 @@ public class World extends JFrame {
                     case "WilczeJagody" -> organizmy.add(new WilczeJagody(this, x, y));
                     case "BarszczSosnowskiego" -> organizmy.add(new BarszczSosnowskiego(this, x, y));
                 }
+                organizmy.get(i).setWiek(wiek);
             }
             repaint();
         } catch (IOException e) {

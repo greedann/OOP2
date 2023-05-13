@@ -22,15 +22,10 @@ public class Roslina extends Organizm{
                 case 2 -> newY--;
                 case 3 -> newY++;
             }
-            if (newX < 0 ||  newX >= this.world.getBlockWidth() || newY < 0 || newY >= this.world.getBlockHeight() || this.world.isOccupied(newX, newY))
-            {
-                return;
-            }
-            else
+            if (!(newX < 0 ||  newX >= this.world.getBlockWidth() || newY < 0 || newY >= this.world.getBlockHeight() || this.world.isOccupied(newX, newY)))
             {
                 this.world.addOrganizm(this.copy(newX, newY));
             }
-
         }
     }
 

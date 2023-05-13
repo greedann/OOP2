@@ -9,7 +9,7 @@ public class Wilk extends Zwierze{
         super(world, x, y);
         this.sila = 9;
         this.inicjatywa = 5;
-        this.color = Color.GRAY;
+        this.color = Color.darkGray;
     }
 
     @Override

@@ -8,7 +8,7 @@ public class WilczeJagody extends Roslina{
     public WilczeJagody(symulacja.World world, int x, int y) {
         super(world, x, y);
         this.sila = 99;
-        this.color = Color.black;
+        this.color = Color.blue;
     }
 
     @Override
